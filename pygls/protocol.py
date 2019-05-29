@@ -536,7 +536,10 @@ class LanguageServerProtocol(JsonRPCProtocol, metaclass=LSPMeta):
         """
         logger.info('Language server initialized {}'.format(params))
 
-        self._server.process_id = params.processId
+        try:
+            self._server.process_id = params.processId
+        except AttributeError:
+            self._server.process_id = None
 
         # Initialize server capabilities
         client_capabilities = params.capabilities
