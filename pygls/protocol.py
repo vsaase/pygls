@@ -362,20 +362,7 @@ class JsonRPCProtocol(asyncio.Protocol):
 
         try:
             body = json.dumps(data, default=lambda o: o.__dict__)
-            content_length = len(body.encode(self.CHARSET)) if body else 0
-
-            response = (
-                'Content-Length: {}\r\n'
-                'Content-Type: {}; charset={}\r\n\r\n'
-                '{}'.format(content_length,
-                            self.CONTENT_TYPE,
-                            self.CHARSET,
-                            body)
-            )
-
-            logger.info('Sending data: {}'.format(body))
-
-            self.transport.write(response.encode(self.CHARSET))
+            self.transport.write(body)
         except Exception:
             logger.error(traceback.format_exc())
 
@@ -536,7 +523,10 @@ class LanguageServerProtocol(JsonRPCProtocol, metaclass=LSPMeta):
         """
         logger.info('Language server initialized {}'.format(params))
 
-        self._server.process_id = params.processId
+        try:
+            self._server.process_id = params.processId
+        except AttributeError:
+            self._server.process_id = None
 
         # Initialize server capabilities
         client_capabilities = params.capabilities
