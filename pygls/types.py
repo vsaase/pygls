@@ -227,7 +227,7 @@ class CompletionItem:
                  preselect: bool = False,
                  sort_text: str = None,
                  filter_text: str = None,
-                 insert_text: str = None,
+                 insert_text: str = "",
                  insert_text_format: str = None,
                  text_edit: 'TextEdit' = None,
                  additional_text_edits: List['TextEdit'] = None,
@@ -242,7 +242,7 @@ class CompletionItem:
         self.preselect = preselect
         self.sortText = sort_text
         self.filterText = filter_text
-        self.insertText = insert_text
+        self.insertText = label
         self.insertTextFormat = insert_text_format
         self.textEdit = text_edit
         self.additionalTextEdits = additional_text_edits
